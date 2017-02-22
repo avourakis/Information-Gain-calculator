@@ -2,7 +2,7 @@
 Author: Andres Vourakis
 Description: Simple script to help compute the information gain of a set of features
 Last Date Modified: 2/21/2017
-Contributors: 
+Contributors: Julie Pham 
 Known Bugs:
 1. 
     
@@ -50,7 +50,9 @@ for i in range(0,nFeatures):
     nX1 = features[i].count('1')
 
     probX0 = float(nX0)/nData
+    print("p(X = 0) = {}\n".format(probX0))
     probX1 = float(nX1)/nData
+    print("p(X = 1) = {}\n".format(probX1))
 
     entropyX0 = 0;
     entropyX1 = 0;
@@ -67,12 +69,24 @@ for i in range(0,nFeatures):
         #Entropy of X = 0
         probX0Y0 = float(count1)/nX0
         probX0Y1 = float(nX0-count1)/nX0
-        entropyX0 = probX0Y0*(math.log(1/float(probX0Y0),2)) + probX0Y1*(math.log(1/float(probX0Y1), 2))
+        
+        if(probX0Y0 == 1): #Takes care of division by zero
+            entropyX0 = 0
+        else:
+            entropyX0 = probX0Y0*(math.log(1/float(probX0Y0),2)) + probX0Y1*(math.log(1/float(probX0Y1), 2))
+            
+        print("H(X = 0) = {}\n".format(entropyX0))
         
         #Entropy of X = 1
         probX1Y0 = float(count2)/nX1
         probX1Y1 = float(nX1-count2)/nX1
-        entropyX1 = probX1Y0*(math.log(1/float(probX1Y0),2)) + probX1Y1*(math.log(1/float(probX1Y1), 2))
+        
+        if(probX1Y0 == 1): #Takes care of division by zero
+            entropyX1 = 0
+        else:
+            entropyX1 = probX1Y0*(math.log(1/float(probX1Y0),2)) + probX1Y1*(math.log(1/float(probX1Y1), 2))
+            
+        print("H(X = 1) = {}\n".format(entropyX1))
 
         # Compute Information gain
         result = probX0*(entropyY - entropyX0) + probX1*(entropyY - entropyX1)
@@ -80,6 +94,5 @@ for i in range(0,nFeatures):
 
     except ZeroDivisionError as e:
         print("Couldnt Compute Information Gain for X{} as one of the probabilities was 0: {}\n".format(i+1, e))
-
 
 
